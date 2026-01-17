@@ -9,12 +9,9 @@ interface ModalProps {
   children: ReactNode
 }
 
-
-const modalRoot = document.getElementById("modal-root")
 function Modal({ onClose, children }: ModalProps) {
-  
-useEffect(() => {
-const handleEsc = (event: KeyboardEvent) => {
+  useEffect(() => {
+    const handleEsc = (event: KeyboardEvent) => {
       if (event.key === "Escape") onClose();
     };
 
@@ -31,24 +28,24 @@ const handleEsc = (event: KeyboardEvent) => {
     if (e.target === e.currentTarget) onClose();
   };
 
+  if (typeof window === 'undefined') return null;
+  
+  const modalRoot = document.getElementById("modal-root");
   if (!modalRoot) return null;
 
-    return createPortal(
-        <>
-        <div
-  className={css.backdrop}
-  role="dialog"
-          aria-modal="true"
-          onClick={handleBackdrop}
->
-  <div className={css.modal}>
-            {children}
-  </div>
-            </div>
-        </>,
-        modalRoot as HTMLDivElement
+  return createPortal(
+    <div
+      className={css.backdrop}
+      role="dialog"
+      aria-modal="true"
+      onClick={handleBackdrop}
+    >
+      <div className={css.modal}>
+        {children}
+      </div>
+    </div>,
+    modalRoot
+  )
+}
 
-    )
-    }
-
-    export default Modal
+export default Modal
